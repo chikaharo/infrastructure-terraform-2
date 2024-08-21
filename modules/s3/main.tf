@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "allow_public_access_to_s3_bucket" {
   }  
 }
 
-# resource "aws_s3_bucket" "aurora-s3" {
-#   bucket = "my-aurora-import-bucket"
-#   acl    = "private"
-# }
+resource "aws_s3_bucket" "aurora" {
+  bucket = "my-aurora-import-bucket"
+  acl    = "private"
+}

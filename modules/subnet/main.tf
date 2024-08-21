@@ -97,3 +97,12 @@ resource "aws_nat_gateway" "gw" {
   allocation_id = aws_eip.nat_gw_eip.id
   subnet_id     = aws_subnet.public-subnet-2.id
 }
+
+resource "aws_db_subnet_group" "rds-db-subnet-group" {
+  name       = "rds-db-subnet-group"
+  subnet_ids = [aws_subnet.private-subnet.id]
+
+  tags = {
+    Name = "rds-db-subnet-group"
+  }
+}

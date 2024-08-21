@@ -1,6 +1,6 @@
-# output "aurora_s3" {
-#     value = aws_s3_bucket.aurora-s3
-# }
+output "s3_bucket_aurora" {
+    value = aws_s3_bucket.aurora
+}
 output "s3_bucket_frontend" {
     value = aws_s3_bucket.frontend
 }

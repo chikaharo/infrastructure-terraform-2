@@ -12,7 +12,7 @@
 #   insufficient_data_actions = []
 
 #   dimensions = {
-#       DBInstanceIdentifier = "your_db_instance_id"
+#       DBInstanceIdentifier = "var.db_instance_id"
 #    }
 # }
 

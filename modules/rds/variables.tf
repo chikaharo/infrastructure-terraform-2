@@ -1,0 +1,13 @@
+variable engine {}
+variable engine_version {}
+variable db_instance_class {}
+variable rds_sg_id {}
+variable desired_read_replicas {}
+variable master_username {}
+variable master_password {}
+variable aws_s3_bucket_id {}
+variable rds_db_subnet_group_name {}
+variable vpc_zone_identifier {}
+variable avail_zone {}
+variable replica_scale_max {}
+variable replica_scale_min {}
