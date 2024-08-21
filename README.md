@@ -7,9 +7,25 @@
 - Route table
 - NAT gateway with Elastic IP
 - Internet gateway
-  ![alt text](image-3.png)
+
+### Architecture Overview
+
+![alt text](image-3.png)
+
+## Create S3 Cloudfront Website
+
+- S3: store frontend web files
+- Cloudfront: content delivery network (CDN) that speeds up the delivery of static and dynamic content
+- ACM: AWS Certificate Manager is a service that simplifies the process of obtaining, managing, and deploying Secure Sockets Layer/Transport Layer Security (SSL/TLS) certificates
+- Route53: a scalable and highly available Domain Name System (DNS) web service
+
+### Architecture Overview
+
+![alt text](image-4.png)
 
 ## Create Bastion Host
+
+![alt text](image-5.png)
 
 ### Generating SSH Key Pair
 
@@ -28,3 +44,15 @@ First we need to create the SSH Key Pair using following command:
 ### Bastion host ready
 
 ![alt text](image-2.png)
+
+## Create ECS Cluster with App Load Balancer
+
+- ECR: Elastic Container Registry for store image
+- ECS: Elastic Container Service is a fully managed container orchestration service
+- App Load Balanacer
+- Auto Scalling
+- Cloud Watch: metrics method for repository
+
+### Architecture Overview
+
+![alt text](image-6.png)
