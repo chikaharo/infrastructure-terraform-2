@@ -6,5 +6,12 @@ variable ecs_task_execution_role {}
 variable cloudwatch_log_group_id {}
 variable ecr_repository_url {}
 variable alb_listener {}
+variable desired_count {}
+variable ecs_max_capacity {}
+variable ecs_min_capacity {}
+variable instance_type {}
+variable container_port {}
+variable host_port {}
 variable app_environment {}
 variable app_name {}
+variable aws_region {}

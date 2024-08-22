@@ -1,11 +1,11 @@
 resource "aws_route53_zone" "main" {
-  name = "example.com"
+  name = var.domain_name
 }
 
 resource "aws_route53_record" "frontend" {  
   zone_id = aws_route53_zone.main.zone_id  
   name    = var.domain_name  
-  type    = "A"  
+  type    = var.dns_type
   
   alias {  
     name                   = var.cloudfront_domain_name  

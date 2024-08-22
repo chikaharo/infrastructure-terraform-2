@@ -1,6 +1,6 @@
 variable bastion_ingress_ip {}
-# variable ecs-ip {}
-# variable ecr-ip {}
-# variable alb-ip {}
-# variable rds-ip {}
 variable vpc_id {}
+variable app_name {}
+variable app_env {}
+variable ecs_ingress_cidr_blocks {}
+variable rds_cidr_blocks {}

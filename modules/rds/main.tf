@@ -1,10 +1,10 @@
 
 resource "aws_rds_cluster" "aurora" {
-  cluster_identifier     = "aurora-cluster"  
+  cluster_identifier     = var.cluster_identifier
   engine                 = var.engine  
   engine_version         = var.engine_version
-  database_name          = "aurora-db"  
-  availability_zones     = [var.avail_zone]
+  database_name          = var.db_name
+  availability_zones     = [var.avail_zones[2]]
   master_username        = var.master_username  
   master_password        = var.master_password  
   
@@ -12,8 +12,8 @@ resource "aws_rds_cluster" "aurora" {
   vpc_security_group_ids = [var.rds_sg_id]
 
   s3_import {
-    source_engine         = "mysql"
-    source_engine_version = "5.7"
+    source_engine         = var.s3_engine
+    source_engine_version = var.s3_engine_ver
     bucket_name           = var.aws_s3_bucket_id
     bucket_prefix         = "backups"
     ingestion_role        = "arn:aws:iam::1234567890:role/role-xtrabackup-rds-restore"
@@ -35,7 +35,8 @@ resource "aws_rds_cluster_instance" "aurora-instance" {
   apply_immediately            = false
   auto_minor_version_upgrade   = false
   tags = {
-    Name = "rds-cluster-aurora-instance"
+    Name = "${var.app_name}-rds-aurora-cluster-instace-${count.index}"
+    Environment = "${var.app_env}-rds-aurora-cluster-instace-${count.index}"
   }
   lifecycle {
     prevent_destroy = true   //it will prevent from accidental deletion

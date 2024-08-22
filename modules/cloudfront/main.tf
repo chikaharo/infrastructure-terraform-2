@@ -12,9 +12,10 @@ module "acm" {
   
   wait_for_validation       = true  
   
-  tags = {  
-    Name = "myapp-acm"  
-  }  
+  tags = {
+    Name = "${var.app_name}-acm"
+    Environment = "${var.app_env}-acm"
+  }
 }
 
 resource "aws_cloudfront_distribution" "frontend_distribution" {  
@@ -29,7 +30,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   
   origin {  
     domain_name = var.frontend_endpoint  
-    origin_id   = "frontend-orgin"  
+    origin_id   = var.origin_id
   
     custom_origin_config {  
       http_port              = 80  
@@ -48,7 +49,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   default_cache_behavior {  
     allowed_methods        = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]  
     cached_methods         = ["GET", "HEAD", "OPTIONS"]  
-    target_origin_id       = "frontend-orgin"  
+    target_origin_id       = var.origin_id
     viewer_protocol_policy = "redirect-to-https"  
   
     forwarded_values {  

@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "aws-ecr" {
-  name = "myapp-ecr"
+  name = var.ecr_name
   tags = {
-    Name        = "myapp-ecr"
+    Name = "${var.app_name}-bastion-host-root-volume"
+    Environment = "${var.app_env}-bastion-host-root-volume"
   }
 }

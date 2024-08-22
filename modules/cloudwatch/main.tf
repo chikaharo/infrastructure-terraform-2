@@ -20,7 +20,8 @@ resource "aws_cloudwatch_log_group" "log-group" {
   name = "myapp-logs"
 
   tags = {
-    Application = "myapp"
+    Name = "${var.app_name}-bastion-host-root-volume"
+    Environment = "${var.app_env}-bastion-host-root-volume"
   }
 }
 

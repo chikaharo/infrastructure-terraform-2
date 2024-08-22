@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "frontend" {  
-  bucket = "s3-frontend"  
+  bucket = var.s3_frontend_bucket 
 }  
 
 resource "aws_s3_bucket_public_access_block" "frontend_public_access_block" {  
@@ -41,6 +41,6 @@ data "aws_iam_policy_document" "allow_public_access_to_s3_bucket" {
 }
 
 resource "aws_s3_bucket" "aurora" {
-  bucket = "my-aurora-import-bucket"
+  bucket = var.s3_aurora_bucket
   acl    = "private"
 }

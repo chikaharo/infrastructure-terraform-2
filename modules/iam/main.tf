@@ -2,7 +2,8 @@ resource "aws_iam_role" "ecsTaskExecutionRole" {
   name               = "myapp-execution-task-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
   tags = {
-    Name        = "myapp-iam-role"
+    Name = "${var.app_name}-bastion-host-root-volume"
+    Environment = "${var.app_env}-bastion-host-root-volume"
   }
 }
 

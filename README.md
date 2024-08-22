@@ -40,6 +40,7 @@ Create the infrastructure was described by this diagram
 
 - ECR: Elastic Container Registry for store image
 - ECS: Elastic Container Service is a fully managed container orchestration service
+- IAM policy for ECS permissions to pull image from the ECR
 - App Load Balanacer
 - Auto Scalling
 - Cloud Watch: metrics method for repository

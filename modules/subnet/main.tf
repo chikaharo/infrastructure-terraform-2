@@ -1,41 +1,36 @@
 
 
 resource "aws_subnet" "private-subnet" {
+  count = length(var.private_subnet_cidrs)
   vpc_id     =  var.vpc_id
-  cidr_block = "10.0.10.0/24"
-  availability_zone = "ap-northeast-1a"
+  cidr_block = var.private_subnet_cidrs[count.index]
+  availability_zone = var.azs[2]
   tags = {
-    Name = "myapp-private-subnet"
+    Name = "${var.app_name}-private-subnet-${count.index}"
+    Environment = "${var.app_env}-private-subnet-${count.index}"
   }
   map_public_ip_on_launch = false
 }
 
 ## Public subnet
-resource "aws_subnet" "public-subnet-1" {
+resource "aws_subnet" "public-subnet" {
+  count = length(var.public_subnet_cidrs)
   vpc_id     =  var.vpc_id
-  cidr_block = "10.0.4.0/24"
-  availability_zone = "ap-northeast-1c"
+  cidr_block =  var.public_subnet_cidrs[count.index]
+  availability_zone = var.azs[count.index]
   tags = {
-    Name = "myapp-public-subnet-1"
-  }
-  
-}
-
-resource "aws_subnet" "public-subnet-2" {
-  vpc_id     =  var.vpc_id
-  cidr_block = "10.0.6.0/24"
-  availability_zone = "ap-northeast-1d"
-  tags = {
-    Name = "myapp-public-subnet-2"
+    Name = "${var.app_name}-private-subnet-${count.index}"
+    Environment = "${var.app_env}-private-subnet-${count.index}"
   }
   
 }
 
 resource "aws_internet_gateway" "myapp-igw" {
     vpc_id = var.vpc_id
-    tags = {
-        Name: "myapp-igw"
-    }   
+   tags = {
+    Name = "${var.app_name}-igw"
+    Environment = "${var.app_env}-igw"
+  }
 }
 
 resource "aws_route_table" "public-route-table" {
@@ -52,7 +47,8 @@ resource "aws_route_table" "public-route-table" {
   }
 
   tags = {
-    Name = "public subnet route table"
+    Name = "${var.app_name}-public-subnet-route-table"
+    Environment = "${var.app_env}-public-subnet-route-table"
   }
 }
 
@@ -70,22 +66,21 @@ resource "aws_route_table" "private-route-table" {
   }
 
   tags = {
-    Name = "private subnet route table"
+    Name = "${var.app_name}-private-subnet-route-table"
+    Environment = "${var.app_env}-private-subnet-route-table"
   }
 }
 
-resource "aws_route_table_association" "public-subnet-1-association" {
-  subnet_id      = aws_subnet.public-subnet-1.id
+resource "aws_route_table_association" "public-subnet-association" {
+  count          = length(var.public_subnet_cidrs)
+  subnet_id      = aws_subnet.public-subnet[count.index].id 
   route_table_id = aws_route_table.public-route-table.id
-}
 
-resource "aws_route_table_association" "public-subnet-2-association" {
-  subnet_id      = aws_subnet.public-subnet-2.id
-  route_table_id = aws_route_table.public-route-table.id
 }
 
 resource "aws_route_table_association" "private-subnet-association" {
-  subnet_id      = aws_subnet.private-subnet.id
+  count          = length(var.private_subnet_cidrs)
+  subnet_id      = aws_subnet.private-subnet[count.index].id
   route_table_id = aws_route_table.private-route-table.id
 }
 
@@ -95,14 +90,15 @@ resource "aws_eip" "nat_gw_eip" {
 
 resource "aws_nat_gateway" "gw" {
   allocation_id = aws_eip.nat_gw_eip.id
-  subnet_id     = aws_subnet.public-subnet-2.id
+  subnet_id     = aws_subnet.public-subnet[1].id
 }
 
 resource "aws_db_subnet_group" "rds-db-subnet-group" {
-  name       = "rds-db-subnet-group"
-  subnet_ids = [aws_subnet.private-subnet.id]
+  name       = var.db_subnet_group_name
+  subnet_ids = aws_subnet.private-subnet[*].id
 
   tags = {
-    Name = "rds-db-subnet-group"
+    Name = "${var.app_name}-rds-db-subnet-group"
+    Environment = "${var.app_env}-rds-db-subnet-group"
   }
 }

@@ -1,12 +1,10 @@
 resource "aws_security_group" "rds_sg" {
   name        = "my-aurora-rds-sg"
-  description = "Security group for RDS instance"
-
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"] # allow access from vpc
+    cidr_blocks = var.rds_cidr_blocks
   }
 
   egress {
@@ -16,14 +14,14 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {  
-    Name = "myapp-rds_sg"  
-  }  
+  tags = {
+    Name = "${var.app_name}-rds-security-group"
+    Environment = "${var.app_env}-rds-security-group"
+  }
 }
 
 
 resource "aws_security_group" "bastion-sg" {
-  description = "EC2 Bastion Host Security Group"
   name = "bastion-sg"
   vpc_id = var.vpc_id
   ingress {
@@ -48,9 +46,10 @@ resource "aws_security_group" "bastion-sg" {
     description = "IPv4 route Open to Public Internet"
   }
 
-  tags = {  
-    Name = "myapp-bastion_sg"  
-  }  
+  tags = {
+    Name = "${var.app_name}-bastion-host-security-group"
+    Environment = "${var.app_env}-bastion-host-security-group"
+  }
 }
 
 resource "aws_security_group" "alb_sg" {  
@@ -72,9 +71,10 @@ resource "aws_security_group" "alb_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {  
-    Name = "alb_sg"  
-  }  
+   tags = {
+    Name = "${var.app_name}-alb-security-group"
+    Environment = "${var.app_env}-alb-security-group"
+  }
 }  
 
 resource "aws_security_group" "ecs_sg" {  
@@ -84,19 +84,19 @@ resource "aws_security_group" "ecs_sg" {
     from_port   = 0  
     to_port     = 0  
     protocol    = "tcp"  
-    cidr_blocks = ["10.0.0.0/16"]  
+    cidr_blocks = var.ecs_ingress_cidr_blocks  
   }  
   egress {
     from_port = 0
     to_port = 0
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "IPv4 route Open to Public Internet"
   }
 
-  tags = {  
-    Name = "alb_sg"  
-  }  
+   tags = {
+    Name = "${var.app_name}-ecs-security-group"
+    Environment = "${var.app_env}-ecs-security-group"
+  }
 }  
 
 resource "aws_security_group" "service_security_group" {
@@ -117,8 +117,8 @@ resource "aws_security_group" "service_security_group" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-    Name        = "myapp-service-sg"
-  
+   tags = {
+    Name = "${var.app_name}-service-security-group"
+    Environment = "${var.app_env}-service-security-group"
   }
 }

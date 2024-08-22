@@ -3,12 +3,13 @@ resource "aws_lb" "myapp-lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.sg_id]
-  subnets            = [var.pub_subnet1_id, var.pub_subnet2_id]
+  subnets            = var.public_subnet_ids
 
   enable_deletion_protection = false
 
   tags = {
-    Name = "myapp-lb"
+    Name = "${var.app_name}-load-balancer"
+    Environment = "${var.app_env}-load-balancer"
   }
 }
 
@@ -30,9 +31,9 @@ resource "aws_lb_target_group" "tg-group" {
   }
 
   tags = {
-    Name        = "myapp-lb-tg"
+    Name = "${var.app_name}-load-balancer-target-group"
+    Environment = "${var.app_env}-load-balancer-target-group"
   }
-
 
 }
 
