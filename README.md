@@ -1,7 +1,7 @@
 # Create infrastructure using Terraform
 
 Create the infrastructure was described by this diagram
-![alt text](image-8.png)
+![alt text](infrastructure-1.jpeg)
 
 ## Create VPC
 
