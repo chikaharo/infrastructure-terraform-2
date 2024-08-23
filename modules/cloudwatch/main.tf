@@ -1,23 +1,23 @@
-# resource "aws_cloudwatch_metric_alarm" "CPUUtilization" {
-#   alarm_name                = "test-cpu-alarm"
-#   comparison_operator       = "GreaterThanOrEqualToThreshold"
-#   evaluation_periods        = "5"
-#   metric_name               = "CPUUtilization"
-#   namespace                 = "AWS/RDS"
-#   period                    = "30"
-#   statistic                 = "Maximum"
-#   threshold                 = "50"
-#   alarm_description         = "This metric monitors RDS CPU utilization"
-#   alarm_actions             = [aws_sns_topic.test_cloudwatch_updates.arn]
-#   insufficient_data_actions = []
+resource "aws_cloudwatch_metric_alarm" "CPUUtilization" {
+  alarm_name                = "test-cpu-alarm"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = "5"
+  metric_name               = "CPUUtilization"
+  namespace                 = "AWS/RDS"
+  period                    = "30"
+  statistic                 = "Maximum"
+  threshold                 = "50"
+  alarm_description         = "This metric monitors RDS CPU utilization"
+  alarm_actions             = [aws_sns_topic.test_cloudwatch_updates.arn]
+  insufficient_data_actions = []
 
-#   dimensions = {
-#       DBInstanceIdentifier = "var.db_instance_id"
-#    }
-# }
+  dimensions = {
+      DBInstanceIdentifier = var.db_instance_id
+   }
+}
 
 resource "aws_cloudwatch_log_group" "log-group" {
-  name = "myapp-logs"
+  name = "${var.app_name}-logs"
 
   tags = {
     Name = "${var.app_name}-bastion-host-root-volume"
@@ -26,7 +26,7 @@ resource "aws_cloudwatch_log_group" "log-group" {
 }
 
 resource "aws_sns_topic" "test_cloudwatch_updates" {
-  name = "test-cloudwatch-notifications"
+  name = "${var.app_name}-cloudwatch-notifications"
 }
 
 resource "aws_sns_topic_subscription" "cloudwatch_email_sub" {

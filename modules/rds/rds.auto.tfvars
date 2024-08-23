@@ -1,0 +1,11 @@
+master_username = "admin"
+master_password = "password"
+db_instance_class = "db.t2.micro"
+engine = "aurora-mysql"
+engine_version = "5.7.mysql_aurora.2.11.0"
+desired_read_replicas = 2
+db_name = "aurora_db"
+replica_scale_max = 2
+replica_scale_min = 1
+cluster_identifier = "aurora-cluster"
+service_namespace = "rds"

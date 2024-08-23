@@ -19,6 +19,9 @@ variable s3_engine {
 variable s3_engine_ver {
     default = "5.7"
 }
+variable service_namespace {
+    
+}
 
 variable app_name {}
 variable app_env {}

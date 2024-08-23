@@ -11,7 +11,7 @@ resource "aws_key_pair" "ec2-bastion-host-key-pair" {
   public_key = file(var.ec2-bastion-public-key-path)
 }
 resource "aws_instance" "ec2-bastion-host" {
-    ami = "ami-00c79d83cf718a893"
+    ami = var.ami
     instance_type = var.bastion_host_instance_type
     key_name = aws_key_pair.ec2-bastion-host-key-pair.key_name
     vpc_security_group_ids = [ var.bastion_sg_id ]
@@ -19,9 +19,9 @@ resource "aws_instance" "ec2-bastion-host" {
     associate_public_ip_address = false
     # user_data                   = file(var.bastion-bootstrap-script-path)
     root_block_device {
-      volume_size = 8
+      volume_size = var.volume_size
       delete_on_termination = true
-      volume_type = "gp2"
+      volume_type = var.volume_type
       encrypted = true
       tags = {
         Name = "${var.app_name}-bastion-host-root-volume"
@@ -29,7 +29,7 @@ resource "aws_instance" "ec2-bastion-host" {
       }
     }
     credit_specification {
-      cpu_credits = "standard"
+      cpu_credits = var.cpu_credits
     }
     tags = {
         Name = "${var.app_name}-bastion-host-instace"

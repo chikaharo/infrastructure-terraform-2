@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "main" {
 }
 
 resource "aws_ecs_task_definition" "aws_ecs_task" {
-  family                   = "main-task"
+  family                   = var.ecs_task_family
   container_definitions    = <<DEFINITION
   [
     {
@@ -30,16 +30,16 @@ resource "aws_ecs_task_definition" "aws_ecs_task" {
           "hostPort": ${var.host_port}
         }
       ],
-      "cpu": 256,
-      "memory": 512,
+      "cpu": ${var.cpu},
+      "memory": ${var.memory},
       "networkMode": "awsvpc"
     }
   ]
   DEFINITION
-  cpu   = 256
-  memory = 512
+  cpu   = var.cpu
+  memory = var.memory
   requires_compatibilities = ["FARGATE"]
-  network_mode             = "awsvpc"
+  network_mode             = var.task_network_mode
   execution_role_arn       = var.ecs_task_execution_role.arn
   task_role_arn            = var.ecs_task_execution_role.arn
   
@@ -58,8 +58,8 @@ resource "aws_ecs_service" "aws-ecs-service" {
   name                 = "${var.app_name}-${var.app_environment}-ecs-service"
   cluster              = aws_ecs_cluster.main.id
   task_definition      = "${aws_ecs_task_definition.aws_ecs_task.family}:${max(aws_ecs_task_definition.aws_ecs_task.revision, data.aws_ecs_task_definition.main.revision)}"
-  launch_type          = "FARGATE"
-  scheduling_strategy  = "REPLICA"
+  launch_type          = var.service_launch_type
+  scheduling_strategy  = var.service_scheduling_strategy
   desired_count        = var.desired_count
   force_new_deployment = true
 
@@ -90,8 +90,8 @@ resource "aws_appautoscaling_target" "ecs_target" {
 }
 
 resource "aws_launch_configuration" "main" {
-  name          = "main-lc"
-  image_id      = "ami-00c79d83cf718a893"
+  name          = "${var.app_name}-main-lc"
+  image_id      = var.image_id
   instance_type = var.instance_type
   security_groups = [var.ecs_sg_id]
 }

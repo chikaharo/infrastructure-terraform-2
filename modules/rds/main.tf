@@ -50,7 +50,7 @@ resource "aws_appautoscaling_target" "read_replica" {
   min_capacity       = var.replica_scale_min
   resource_id        = aws_rds_cluster.aurora.id
   scalable_dimension = "rds:cluster:ReadReplicaCount"
-  service_namespace  = "rds"
+  service_namespace  = var.service_namespace
 }
 
 resource "aws_appautoscaling_policy" "read_replica" {
@@ -59,7 +59,7 @@ resource "aws_appautoscaling_policy" "read_replica" {
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_rds_cluster.aurora.id
   scalable_dimension = "rds:cluster:ReadReplicaCount"
-  service_namespace  = "rds"
+  service_namespace  = var.service_namespace
 
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {

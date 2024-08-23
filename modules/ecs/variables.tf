@@ -15,3 +15,22 @@ variable host_port {}
 variable app_environment {}
 variable app_name {}
 variable aws_region {}
+variable cpu {
+    default = 256
+}
+variable memory {
+    default = 512
+}
+variable image_id {
+    default =  "ami-00c79d83cf718a893"
+}
+variable service_launch_type {
+    default = "FARGATE"
+}
+variable service_scheduling_strategy {
+    default = "REPLICA"
+}
+variable task_network_mode {
+    default = "awsvpc"
+}
+variable ecs_task_family {}

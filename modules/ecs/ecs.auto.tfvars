@@ -1,0 +1,13 @@
+desired_count = 2
+container_port = 8080
+host_port = 8080
+ecs_max_capacity = 2
+ecs_min_capacity = 1
+instance_type = "t2.micro"
+cpu = 256
+memeory = 512
+image_id = "ami-00c79d83cf718a893"
+service_launch_type = "FARGATE"
+service_scheduling_strategy = "REPLICA"
+task_network_mode = "awsvpc"
+ecs_task_family = "main-task"
